@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 class App extends React.Component {
   constructor(props) {
     super(props);
+    console.log('init');
     this.state = {
       windowWidth: window.innerWidth,
       windowHeight: window.innerHeight  - 100,
@@ -170,18 +171,19 @@ class App extends React.Component {
   }
 
   render() {
+    console.log('render');
     return (
-      /**/
       <Router>
         <div>
           <Route path="/" exact component={this.Index} />
           <Route path="/players/" component={this.Players} />
           <Route path="/game/" component={this.Game} />
-          <Route path="/players/" component={this.Winners} />
+          <Route path="/winners/" component={this.Winners} />
         </div>
       </Router>
     );
   }
 }
-
+console.log('b4 render');
 ReactDOM.render(<App />, document.getElementById('app'));
+console.log('after render');
