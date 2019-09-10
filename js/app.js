@@ -90,6 +90,7 @@ class App extends React.Component {
   }
 
   Index() {
+    console.log('Index!');
     const labels = this.state.data;
     return (
       <div className="row d-flex justify-content-center content text-center">
@@ -171,10 +172,10 @@ class App extends React.Component {
   }
 
   render() {
-    console.log('render');
+    console.log('render', Router);
     return (
       <Router>
-        <div>
+        <div>{console.log('inside div')}
           <Route path="/" exact component={this.Index} />
           <Route path="/players/" component={this.Players} />
           <Route path="/game/" component={this.Game} />

@@ -188,6 +188,7 @@
 	  }, {
 	    key: 'Index',
 	    value: function Index() {
+	      console.log('Index!');
 	      var labels = this.state.data;
 	      return _react2.default.createElement('div', { className: 'row d-flex justify-content-center content text-center' }, _react2.default.createElement('div', { className: 'col-md-6' }, _react2.default.createElement('main', { role: 'main', className: 'inner cover' }, _react2.default.createElement('h1', { className: 'cover-heading' }, labels.title), _react2.default.createElement('p', { className: 'lead' }, labels.description), _react2.default.createElement('div', { className: 'the-input input-group input-group-lg' }, _react2.default.createElement('div', { className: 'input-group-prepend' }, _react2.default.createElement('span', { className: 'input-group-text', id: 'inputGroup-sizing-lg' }, labels.player1)), _react2.default.createElement('input', {
 	        type: 'text',
@@ -243,8 +244,8 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      console.log('render');
-	      return _react2.default.createElement(_reactRouterDom.BrowserRouter, null, _react2.default.createElement('div', null, _react2.default.createElement(_reactRouterDom.Route, { path: '/', exact: true, component: this.Index }), _react2.default.createElement(_reactRouterDom.Route, { path: '/players/', component: this.Players }), _react2.default.createElement(_reactRouterDom.Route, { path: '/game/', component: this.Game }), _react2.default.createElement(_reactRouterDom.Route, { path: '/winners/', component: this.Winners })));
+	      console.log('render', _reactRouterDom.BrowserRouter);
+	      return _react2.default.createElement(_reactRouterDom.BrowserRouter, null, _react2.default.createElement('div', null, console.log('inside div'), _react2.default.createElement(_reactRouterDom.Route, { path: '/', exact: true, component: this.Index }), _react2.default.createElement(_reactRouterDom.Route, { path: '/players/', component: this.Players }), _react2.default.createElement(_reactRouterDom.Route, { path: '/game/', component: this.Game }), _react2.default.createElement(_reactRouterDom.Route, { path: '/winners/', component: this.Winners })));
 	    }
 	  }]);
 	
