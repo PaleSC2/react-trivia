@@ -174,7 +174,7 @@ class App extends React.Component {
   render() {
     console.log('render', Router, process.env.PUBLIC_URL);
     return (
-      <Router basename={process.env.PUBLIC_URL}>
+      <Router basename="https://palesc2.github.io/react-trivia">
         <div>{console.log('inside div')}
           <Route path="/index/" exact component={this.Index} />
           <Route path="/players/" component={this.Players} />
