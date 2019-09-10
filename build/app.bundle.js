@@ -244,8 +244,8 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      console.log('render', _reactRouterDom.BrowserRouter);
-	      return _react2.default.createElement(_reactRouterDom.BrowserRouter, { basename: process.env.PUBLIC_URL }, _react2.default.createElement('div', null, console.log('inside div'), _react2.default.createElement(_reactRouterDom.Route, { path: '/', exact: true, component: this.Index }), _react2.default.createElement(_reactRouterDom.Route, { path: '/players/', component: this.Players }), _react2.default.createElement(_reactRouterDom.Route, { path: '/game/', component: this.Game }), _react2.default.createElement(_reactRouterDom.Route, { path: '/winners/', component: this.Winners })));
+	      console.log('render', _reactRouterDom.BrowserRouter, process.env.PUBLIC_URL);
+	      return _react2.default.createElement(_reactRouterDom.BrowserRouter, { basename: process.env.PUBLIC_URL }, _react2.default.createElement('div', null, console.log('inside div'), _react2.default.createElement(_reactRouterDom.Route, { path: '/index/', exact: true, component: this.Index }), _react2.default.createElement(_reactRouterDom.Route, { path: '/players/', component: this.Players }), _react2.default.createElement(_reactRouterDom.Route, { path: '/game/', component: this.Game }), _react2.default.createElement(_reactRouterDom.Route, { path: '/winners/', component: this.Winners })));
 	    }
 	  }]);
 	

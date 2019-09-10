@@ -172,11 +172,11 @@ class App extends React.Component {
   }
 
   render() {
-    console.log('render', Router);
+    console.log('render', Router, process.env.PUBLIC_URL);
     return (
       <Router basename={process.env.PUBLIC_URL}>
         <div>{console.log('inside div')}
-          <Route path="/" exact component={this.Index} />
+          <Route path="/index/" exact component={this.Index} />
           <Route path="/players/" component={this.Players} />
           <Route path="/game/" component={this.Game} />
           <Route path="/winners/" component={this.Winners} />
