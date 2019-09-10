@@ -115,10 +115,12 @@
 	      windowWidth: window.innerWidth,
 	      windowHeight: window.innerHeight - 100,
 	      data: {},
-	      player1: '',
-	      player2: '',
+	      player1: '1',
+	      player2: '2',
 	      player1Points: 0,
-	      player2Points: 0
+	      player2Points: 0,
+	      turn: 1,
+	      p1Turn: true
 	    };
 	    _this.Game = _this.Game.bind(_this);
 	    _this.Index = _this.Index.bind(_this);
@@ -149,31 +151,53 @@
 	      this.setState({ data: data, rows: rows, cols: data.game.length });
 	    }
 	  }, {
+	    key: 'handleTurn',
+	    value: function handleTurn(isCorrect, points) {
+	      var turn = this.state.turn + 1;
+	      var p1Turn = this.state.turn % 2 === 1;
+	      this.setState({ p1Turn: p1Turn });
+	
+	      if (isCorrect) {
+	        if (p1Turn) {
+	          this.setState({ player1Points: this.state.player1Points + points });
+	        } else {
+	          this.setState({ player2Points: this.state.player2Points + points });
+	        }
+	      }
+	      this.setState({ turn: turn });
+	    }
+	  }, {
 	    key: 'Game',
 	    value: function Game() {
+	      var _this2 = this;
+	
 	      var labels = this.state.data;
 	      var headerHeight = this.state.windowWidth > 640 ? 55 : 25,
 	          cardWidth = this.state.windowWidth / this.state.cols,
 	          cardHeight = (this.state.windowHeight - headerHeight) / this.state.rows,
 	          cards = [];
-	
-	      this.state.data.game.forEach(function (category, categoryIndex) {
-	        var left = categoryIndex * cardWidth;
-	        category.questions.forEach(function (question, questionIndex) {
-	          cards.push(_react2.default.createElement(_Card2.default, {
-	            left: left,
-	            top: questionIndex * cardHeight + headerHeight,
-	            height: cardHeight,
-	            width: cardWidth,
-	            question: question,
-	            key: categoryIndex + '-' + questionIndex
-	          }));
+	      if (this.state.data.game) {
+	        this.state.data.game.forEach(function (category, categoryIndex) {
+	          var left = categoryIndex * cardWidth;
+	          category.questions.forEach(function (question, questionIndex) {
+	            cards.push(_react2.default.createElement(_Card2.default, {
+	              left: left,
+	              top: questionIndex * cardHeight + headerHeight,
+	              height: cardHeight,
+	              width: cardWidth,
+	              question: question,
+	              key: categoryIndex + '-' + questionIndex,
+	              handleTurn: _this2.handleTurn.bind(_this2)
+	            }));
+	          });
 	        });
-	      });
+	      }
+	
 	      var playerStyle = {
 	        width: this.state.windowWidth / 3
 	      };
-	      return _react2.default.createElement('div', null, _react2.default.createElement('div', { className: 'headers' }, _react2.default.createElement('span', { style: playerStyle, className: 'header player' }, this.state.player1 + ' |  ', _react2.default.createElement('span', { className: 'total-points' }, this.state.player1Points + ' ' + labels.points)), _react2.default.createElement('span', { style: playerStyle, className: 'header player' }, this.state.player2 + ' |  ', _react2.default.createElement('span', { className: 'total-points' }, this.state.player2Points + ' ' + labels.points)), _react2.default.createElement('span', { style: playerStyle, className: 'header player' }, this.state.player2 + ' ' + labels.turn)), _react2.default.createElement(_Headers2.default, { data: this.state.data.game, headerWidth: cardWidth }), cards);
+	
+	      return _react2.default.createElement('div', null, _react2.default.createElement('div', { className: 'headers' }, _react2.default.createElement('span', { style: playerStyle, className: 'header player' }, this.state.player1 + ' |  ', _react2.default.createElement('span', { className: 'total-points' }, this.state.player1Points + ' ' + labels.points)), _react2.default.createElement('span', { style: playerStyle, className: 'header player' }, this.state.player2 + ' |  ', _react2.default.createElement('span', { className: 'total-points' }, this.state.player2Points + ' ' + labels.points)), _react2.default.createElement('span', { style: playerStyle, className: 'header player' }, (this.state.p1Turn ? this.state.player1 : this.state.player2) + ' ' + labels.turn + ' . ' + this.state.turn)), _react2.default.createElement(_Headers2.default, { data: this.state.data.game, headerWidth: cardWidth }), cards);
 	    }
 	  }, {
 	    key: 'handlePlayer1Change',
@@ -245,7 +269,8 @@
 	    key: 'render',
 	    value: function render() {
 	      console.log('render', _reactRouterDom.BrowserRouter, process.env.PUBLIC_URL);
-	      return _react2.default.createElement(_reactRouterDom.BrowserRouter, { basename: 'react-trivia' }, _react2.default.createElement('div', null, console.log('inside div'), _react2.default.createElement(_reactRouterDom.Route, { path: '/index/', exact: true, component: this.Index }), _react2.default.createElement(_reactRouterDom.Route, { path: '/players/', component: this.Players }), _react2.default.createElement(_reactRouterDom.Route, { path: '/game/', component: this.Game }), _react2.default.createElement(_reactRouterDom.Route, { path: '/winners/', component: this.Winners })));
+	      return _react2.default.createElement(_reactRouterDom.BrowserRouter /*basename="react-trivia"*/
+	      , null, _react2.default.createElement('div', null, _react2.default.createElement(_reactRouterDom.Route, { path: '/players/', component: this.Players }), _react2.default.createElement(_reactRouterDom.Route, { path: '/', component: this.Game }), _react2.default.createElement(_reactRouterDom.Route, { path: '/winners/', component: this.Winners })));
 	    }
 	  }]);
 	
@@ -22571,17 +22596,17 @@
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 	
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 	
 	var _createClass = function () {
-	    function defineProperties(target, props) {
-	        for (var i = 0; i < props.length; i++) {
-	            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-	        }
-	    }return function (Constructor, protoProps, staticProps) {
-	        if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-	    };
+	  function defineProperties(target, props) {
+	    for (var i = 0; i < props.length; i++) {
+	      var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
+	    }
+	  }return function (Constructor, protoProps, staticProps) {
+	    if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
+	  };
 	}();
 	
 	var _react = __webpack_require__(2);
@@ -22593,110 +22618,177 @@
 	var audio = _interopRequireWildcard(_audio);
 	
 	function _interopRequireWildcard(obj) {
-	    if (obj && obj.__esModule) {
-	        return obj;
-	    } else {
-	        var newObj = {};if (obj != null) {
-	            for (var key in obj) {
-	                if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];
-	            }
-	        }newObj.default = obj;return newObj;
-	    }
+	  if (obj && obj.__esModule) {
+	    return obj;
+	  } else {
+	    var newObj = {};if (obj != null) {
+	      for (var key in obj) {
+	        if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];
+	      }
+	    }newObj.default = obj;return newObj;
+	  }
 	}
 	
 	function _interopRequireDefault(obj) {
-	    return obj && obj.__esModule ? obj : { default: obj };
+	  return obj && obj.__esModule ? obj : { default: obj };
 	}
 	
 	function _classCallCheck(instance, Constructor) {
-	    if (!(instance instanceof Constructor)) {
-	        throw new TypeError("Cannot call a class as a function");
-	    }
+	  if (!(instance instanceof Constructor)) {
+	    throw new TypeError("Cannot call a class as a function");
+	  }
 	}
 	
 	function _possibleConstructorReturn(self, call) {
-	    if (!self) {
-	        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-	    }return call && ((typeof call === "undefined" ? "undefined" : _typeof(call)) === "object" || typeof call === "function") ? call : self;
+	  if (!self) {
+	    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+	  }return call && ((typeof call === "undefined" ? "undefined" : _typeof(call)) === "object" || typeof call === "function") ? call : self;
 	}
 	
 	function _inherits(subClass, superClass) {
-	    if (typeof superClass !== "function" && superClass !== null) {
-	        throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-	    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+	  if (typeof superClass !== "function" && superClass !== null) {
+	    throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
+	  }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
 	}
 	
-	var Card = function (_React$Component) {
-	    _inherits(Card, _React$Component);
+	var Front = function Front() {
+	  var question = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+	  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+	  var _onClick = arguments[2];
+	  return _react2.default.createElement('div', null, _react2.default.createElement('p', null, question), _react2.default.createElement('ol', null, options.map(function (option, i) {
+	    return _react2.default.createElement('li', {
+	      key: i,
+	      'data-option': i,
+	      onClick: function onClick() {
+	        return _onClick(i);
+	      },
+	      style: { cursor: 'pointer' }
+	    }, option);
+	  })));
+	};
 	
-	    function Card(props) {
-	        _classCallCheck(this, Card);
+	var CardText = function (_React$Component) {
+	  _inherits(CardText, _React$Component);
 	
-	        var _this = _possibleConstructorReturn(this, (Card.__proto__ || Object.getPrototypeOf(Card)).call(this, props));
+	  function CardText(props) {
+	    _classCallCheck(this, CardText);
 	
-	        _this.state = { view: 'points', completed: false };
-	        return _this;
+	    var _this = _possibleConstructorReturn(this, (CardText.__proto__ || Object.getPrototypeOf(CardText)).call(this, props));
+	
+	    _this.state = {
+	      index: -1
+	    };
+	    return _this;
+	  }
+	
+	  _createClass(CardText, [{
+	    key: 'onOptionClick',
+	    value: function onOptionClick(i) {
+	      this.setState({ index: i, test: 'test' });
+	      this.props.handleTurn(i === this.props.answer, this.props.points);
 	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return this.props.isQuestion ? Front(this.props.question, this.props.options, this.onOptionClick.bind(this)) : _react2.default.createElement('p', { style: { color: this.state.index === this.props.answer ? 'green' : 'red' } }, this.props.options[this.props.answer]);
+	    }
+	  }]);
 	
-	    _createClass(Card, [{
-	        key: 'clickHandler',
-	        value: function clickHandler(event) {
-	            var _this2 = this;
-	
-	            if (this.state.view === 'points') {
-	                audio.play("flip");
-	                setTimeout(function () {
-	                    if (_this2.state.view === "question") {
-	                        audio.play("countdown");
-	                    }
-	                }, 1800);
-	                this.setState({ view: 'question', flipping: true });
-	            } else if (this.state.view === 'question') {
-	                audio.stop("countdown");
-	                this.setState({ view: 'answer' });
-	            } else {
-	                audio.play("flipBack");
-	                this.setState({ view: 'points', completed: true, flipping: true });
-	            }
-	        }
-	    }, {
-	        key: 'getLabelBack',
-	        value: function getLabelBack() {
-	            return { __html: this.state.view === 'question' ? this.props.question.question : this.props.question.answer };
-	        }
-	    }, {
-	        key: 'transitionEndHandler',
-	        value: function transitionEndHandler(event) {
-	            if (event.propertyName === 'width') {
-	                this.setState({ flipping: false });
-	            }
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            var style = {
-	                width: this.props.width + 'px',
-	                height: this.props.height + 'px',
-	                transform: 'translate3d(' + this.props.left + 'px,' + this.props.top + 'px,0)',
-	                WebkitTransform: 'translate3d(' + this.props.left + 'px,' + this.props.top + 'px,0)'
-	            },
-	                front = this.state.completed ? _react2.default.createElement('img', { src: 'assets/img/react.svg' }) : _react2.default.createElement('span', { className: 'points' }, this.props.question.points),
-	                className = 'flipper';
-	
-	            if (this.state.view !== 'points') {
-	                className = className + ' flipped';
-	            }
-	            if (this.state.flipping) {
-	                className = className + ' flipping';
-	            }
-	            return _react2.default.createElement('div', { style: style, className: className, onClick: this.clickHandler.bind(this), onTransitionEnd: this.transitionEndHandler.bind(this) }, _react2.default.createElement('div', { className: 'card' }, _react2.default.createElement('div', { className: 'front' }, front), _react2.default.createElement('div', { className: 'back' }, _react2.default.createElement('span', { dangerouslySetInnerHTML: this.getLabelBack() }), _react2.default.createElement('img', { src: 'assets/img/react.svg' }))));
-	        }
-	    }]);
-	
-	    return Card;
+	  return CardText;
 	}(_react2.default.Component);
 	
-	;
+	var Card = function (_React$Component2) {
+	  _inherits(Card, _React$Component2);
+	
+	  function Card(props) {
+	    _classCallCheck(this, Card);
+	
+	    var _this2 = _possibleConstructorReturn(this, (Card.__proto__ || Object.getPrototypeOf(Card)).call(this, props));
+	
+	    _this2.state = { view: 'points', completed: false };
+	
+	    return _this2;
+	  }
+	
+	  _createClass(Card, [{
+	    key: 'clickHandler',
+	    value: function clickHandler(event) {
+	      var _this3 = this;
+	
+	      if (this.state.view === 'points') {
+	        audio.play('flip');
+	        setTimeout(function () {
+	          if (_this3.state.view === 'question') {
+	            audio.play('countdown');
+	          }
+	        }, 1800);
+	        this.setState({ view: 'question', flipping: true });
+	      } else if (this.state.view === 'question') {
+	        audio.stop('countdown');
+	        this.setState({ view: 'answer' });
+	      } else {
+	        audio.play('flipBack');
+	        this.setState({ view: 'points', completed: true, flipping: true });
+	      }
+	    }
+	  }, {
+	    key: 'getLabelBack',
+	    value: function getLabelBack() {
+	      var question = '<p>' + this.props.question.question + '</p>';
+	      var options = '<ul>' + (this.props.question.options && this.props.question.options.map(function (option, i) {
+	        return '<button>\n          ' + (i + 1) + '. ' + option + '\n        </button>';
+	      }).join('') || '');
+	      return {
+	        __html: this.state.view === 'question' ? question + options : this.props.question.answer
+	      };
+	    }
+	  }, {
+	    key: 'transitionEndHandler',
+	    value: function transitionEndHandler(event) {
+	      if (event.propertyName === 'width') {
+	        this.setState({ flipping: false });
+	      }
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this4 = this;
+	
+	      var style = {
+	        width: this.props.width + 'px',
+	        height: this.props.height + 'px',
+	        transform: 'translate3d(' + this.props.left + 'px,' + this.props.top + 'px,0)',
+	        WebkitTransform: 'translate3d(' + this.props.left + 'px,' + this.props.top + 'px,0)'
+	      },
+	          front = this.state.completed ? _react2.default.createElement('img', { src: '../assets/img/von_humboldt.png' }) : _react2.default.createElement('span', { className: 'points' }, this.props.question.points),
+	          className = 'flipper';
+	
+	      if (this.state.view !== 'points') {
+	        className = className + ' flipped';
+	      }
+	      if (this.state.flipping) {
+	        className = className + ' flipping';
+	      }
+	      return _react2.default.createElement('div', {
+	        style: style,
+	        className: className,
+	        onClick: function onClick(e) {
+	          return console.log(_this4.state.completed) || _this4.state.completed ? e.preventDefault : _this4.clickHandler.bind(_this4)();
+	        },
+	        onTransitionEnd: this.transitionEndHandler.bind(this)
+	      }, _react2.default.createElement('div', { className: 'card' }, 'test:', this.state.test, _react2.default.createElement('div', { className: 'front' }, front), _react2.default.createElement('div', { className: 'back' }, _react2.default.createElement(CardText, {
+	        isQuestion: this.state.view === 'question',
+	        question: this.props.question.question,
+	        answer: this.props.question.answer,
+	        points: this.props.question.points || 0,
+	        options: this.props.question.options || [],
+	        handleTurn: this.props.handleTurn
+	      }), _react2.default.createElement('img', { src: '../assets/img/von_humboldt.png' }))));
+	    }
+	  }]);
+	
+	  return Card;
+	}(_react2.default.Component);
 	
 	exports.default = Card;
 
@@ -22793,7 +22885,7 @@
 	            },
 	                headers = [];
 	
-	            this.props.data.forEach(function (category, index) {
+	            this.props.data && this.props.data.forEach(function (category, index) {
 	                return headers.push(_react2.default.createElement('span', { className: 'header', style: style, key: index }, category.category));
 	            });
 	

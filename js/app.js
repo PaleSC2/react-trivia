@@ -13,10 +13,12 @@ class App extends React.Component {
       windowWidth: window.innerWidth,
       windowHeight: window.innerHeight  - 100,
       data: {},
-      player1: '',
-      player2: '',
+      player1: '1',
+      player2: '2',
       player1Points: 0,
-      player2Points: 0
+      player2Points: 0,
+      turn: 1,
+      p1Turn: true
     };
     this.Game = this.Game.bind(this);
     this.Index = this.Index.bind(this);
@@ -43,37 +45,57 @@ class App extends React.Component {
     this.setState({ data: data, rows: rows, cols: data.game.length });
   }
 
+  handleTurn(isCorrect, points) {
+    const turn = this.state.turn + 1;
+    const p1Turn = this.state.turn % 2 === 1;
+    this.setState({p1Turn});
+
+    if (isCorrect) {
+      if (p1Turn) {
+        this.setState({player1Points: this.state.player1Points + points})
+      } else {
+        this.setState({player2Points: this.state.player2Points + points})
+      }
+    }
+    this.setState({turn})
+
+  }
+
   Game() {
     const labels = this.state.data;
     let headerHeight = this.state.windowWidth > 640 ? 55 : 25,
       cardWidth = this.state.windowWidth / this.state.cols,
       cardHeight = (this.state.windowHeight - headerHeight) / this.state.rows,
       cards = [];
-
-    this.state.data.game.forEach((category, categoryIndex) => {
-      let left = categoryIndex * cardWidth;
-      category.questions.forEach((question, questionIndex) => {
-        cards.push(
-          <Card
-            left={left}
-            top={questionIndex * cardHeight + headerHeight}
-            height={cardHeight}
-            width={cardWidth}
-            question={question}
-            key={categoryIndex + '-' + questionIndex}
-          />
-        );
+    if (this.state.data.game) {
+      this.state.data.game.forEach((category, categoryIndex) => {
+        let left = categoryIndex * cardWidth;
+        category.questions.forEach((question, questionIndex) => {
+          cards.push(
+            <Card
+              left={left}
+              top={questionIndex * cardHeight + headerHeight}
+              height={cardHeight}
+              width={cardWidth}
+              question={question}
+              key={categoryIndex + '-' + questionIndex}
+              handleTurn={this.handleTurn.bind(this)}
+            />
+          );
+        });
       });
-    });
+    }
+
     const playerStyle = {
       width: this.state.windowWidth / 3
     }
+
     return (
       <div>
         <div className="headers">
           <span style={playerStyle} className="header player">{`${this.state.player1} |  `}<span className="total-points">{`${this.state.player1Points} ${labels.points}`}</span></span>
           <span style={playerStyle} className="header player">{`${this.state.player2} |  `}<span className="total-points">{`${this.state.player2Points} ${labels.points}`}</span></span>
-          <span style={playerStyle} className="header player">{`${this.state.player2} ${labels.turn}`}</span>
+          <span style={playerStyle} className="header player">{`${this.state.p1Turn? this.state.player1 : this.state.player2} ${labels.turn} . ${this.state.turn}`}</span>
         </div>
         <Headers data={this.state.data.game} headerWidth={cardWidth} />
         {cards}
@@ -174,11 +196,11 @@ class App extends React.Component {
   render() {
     console.log('render', Router, process.env.PUBLIC_URL);
     return (
-      <Router basename="react-trivia">
-        <div>{console.log('inside div')}
-          <Route path="/index/" exact component={this.Index} />
+      <Router /*basename="react-trivia"*/>
+        <div>
+          {/*<Route path="/" exact component={this.Index} />*/}
           <Route path="/players/" component={this.Players} />
-          <Route path="/game/" component={this.Game} />
+          <Route path="/" component={this.Game} />
           <Route path="/winners/" component={this.Winners} />
         </div>
       </Router>

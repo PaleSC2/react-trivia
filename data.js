@@ -71,8 +71,9 @@ var data = {
         {
           points: 100,
           question:
-            '<p>Constants (const) are:</p><ol><li>Block scoped</li><li>Function scoped</li><li>Global</li></ol>',
-          answer: 'A. Block scoped'
+            'Constants (const) are:',
+          options: ['Block scoped', 'Function scoped', 'Global'],
+          answer: 0
         },
         {
           points: 200,
