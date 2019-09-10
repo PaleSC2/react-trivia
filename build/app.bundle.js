@@ -110,6 +110,7 @@
 	
 	    var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 	
+	    console.log('init');
 	    _this.state = {
 	      windowWidth: window.innerWidth,
 	      windowHeight: window.innerHeight - 100,
@@ -242,17 +243,17 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      return (
-	        /**/
-	        _react2.default.createElement(_reactRouterDom.BrowserRouter, null, _react2.default.createElement('div', null, _react2.default.createElement(_reactRouterDom.Route, { path: '/', exact: true, component: this.Index }), _react2.default.createElement(_reactRouterDom.Route, { path: '/players/', component: this.Players }), _react2.default.createElement(_reactRouterDom.Route, { path: '/game/', component: this.Game }), _react2.default.createElement(_reactRouterDom.Route, { path: '/players/', component: this.Winners })))
-	      );
+	      console.log('render');
+	      return _react2.default.createElement(_reactRouterDom.BrowserRouter, null, _react2.default.createElement('div', null, _react2.default.createElement(_reactRouterDom.Route, { path: '/', exact: true, component: this.Index }), _react2.default.createElement(_reactRouterDom.Route, { path: '/players/', component: this.Players }), _react2.default.createElement(_reactRouterDom.Route, { path: '/game/', component: this.Game }), _react2.default.createElement(_reactRouterDom.Route, { path: '/winners/', component: this.Winners })));
 	    }
 	  }]);
 	
 	  return App;
 	}(_react2.default.Component);
 	
+	console.log('b4 render');
 	_reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById('app'));
+	console.log('after render');
 
 /***/ }),
 /* 1 */
