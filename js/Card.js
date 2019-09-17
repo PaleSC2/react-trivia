@@ -29,7 +29,7 @@ class CardText extends React.Component {
   }
 
     onOptionClick(i) {
-        this.setState({index: i, test: 'test'})
+        this.setState({index: i})
         this.props.handleTurn(i === this.props.answer, this.props.points)
     }
 
@@ -51,21 +51,16 @@ class Card extends React.Component {
     if (this.state.view === 'points') {
       audio.play('flip');
       setTimeout(() => {
-        if (this.state.view === 'question') {
-          audio.play('countdown');
-        }
       }, 1800);
       this.setState({ view: 'question', flipping: true });
     } else if (this.state.view === 'question') {
-      audio.stop('countdown');
       this.setState({ view: 'answer' });
     } else {
       audio.play('flipBack');
       this.setState({ view: 'points', completed: true, flipping: true });
+      this.props.checkWinner()
     }
   }
-
-
 
   getLabelBack() {
     const question = `<p>${this.props.question.question}</p>`;

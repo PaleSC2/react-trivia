@@ -1,24 +1,26 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Card from './Card';
-import Headers from './Headers';
-import request from './request';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import React from "react";
+import ReactDOM from "react-dom";
+import Card from "./Card";
+import Headers from "./Headers";
+import request from "./request";
+import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    console.log('init');
+    console.log("init");
     this.state = {
       windowWidth: window.innerWidth,
-      windowHeight: window.innerHeight  - 100,
+      windowHeight: window.innerHeight - 100,
       data: {},
-      player1: '1',
-      player2: '2',
+      player1: "Player 1",
+      player2: "Player 2",
       player1Points: 0,
       player2Points: 0,
       turn: 1,
-      p1Turn: true
+      p1Turn: true,
+      questionsRemaining: null,
+      finished: false
     };
     this.Game = this.Game.bind(this);
     this.Index = this.Index.bind(this);
@@ -34,7 +36,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    window.addEventListener('resize', this.handleResize.bind(this));
+    window.addEventListener("resize", this.handleResize.bind(this));
     let rows = 0;
     data.game.forEach(category => {
       if (category.questions.length > rows) {
@@ -42,23 +44,36 @@ class App extends React.Component {
       }
     });
     document.title = data.title;
-    this.setState({ data: data, rows: rows, cols: data.game.length });
+    let numberOfQuestions = 0;
+    data.game.forEach(
+      category => (numberOfQuestions += category.questions.length)
+    );
+    this.setState({
+      data: data,
+      rows: rows,
+      cols: data.game.length,
+      questionsRemaining: numberOfQuestions
+    });
   }
 
   handleTurn(isCorrect, points) {
-    const turn = this.state.turn + 1;
-    const p1Turn = this.state.turn % 2 === 1;
-    this.setState({p1Turn});
-
     if (isCorrect) {
-      if (p1Turn) {
-        this.setState({player1Points: this.state.player1Points + points})
+      if (!p1Turn) {
+        this.setState({ player1Points: this.state.player1Points + points });
       } else {
-        this.setState({player2Points: this.state.player2Points + points})
+        this.setState({ player2Points: this.state.player2Points + points });
       }
     }
-    this.setState({turn})
 
+    const p1Turn = this.state.turn % 2 === 0;
+    const turn = this.state.turn + 1;
+    this.setState({ turn, p1Turn, questionsRemaining: this.state.questionsRemaining - 1});
+  }
+
+  checkWinner() {
+    if (this.state.questionsRemaining === 0) {
+      this.state.finished = true;
+    }
   }
 
   Game() {
@@ -78,8 +93,9 @@ class App extends React.Component {
               height={cardHeight}
               width={cardWidth}
               question={question}
-              key={categoryIndex + '-' + questionIndex}
+              key={categoryIndex + "-" + questionIndex}
               handleTurn={this.handleTurn.bind(this)}
+              checkWinner={this.checkWinner.bind(this)}
             />
           );
         });
@@ -88,14 +104,22 @@ class App extends React.Component {
 
     const playerStyle = {
       width: this.state.windowWidth / 3
-    }
+    };
 
     return (
       <div>
         <div className="headers">
-          <span style={playerStyle} className="header player">{`${this.state.player1} |  `}<span className="total-points">{`${this.state.player1Points} ${labels.points}`}</span></span>
-          <span style={playerStyle} className="header player">{`${this.state.player2} |  `}<span className="total-points">{`${this.state.player2Points} ${labels.points}`}</span></span>
-          <span style={playerStyle} className="header player">{`${this.state.p1Turn? this.state.player1 : this.state.player2} ${labels.turn} . ${this.state.turn}`}</span>
+          <span style={playerStyle} className="header player">
+            {`${this.state.player1} |  `}
+            <span className="total-points">{`${this.state.player1Points} ${labels.points}`}</span>
+          </span>
+          <span style={playerStyle} className="header player">
+            {`${this.state.player2} |  `}
+            <span className="total-points">{`${this.state.player2Points} ${labels.points}`}</span>
+          </span>
+          <span style={playerStyle} className="header player">{`${
+            this.state.p1Turn ? this.state.player1 : this.state.player2
+          } ${labels.turn}`}</span>
         </div>
         <Headers data={this.state.data.game} headerWidth={cardWidth} />
         {cards}
@@ -112,7 +136,7 @@ class App extends React.Component {
   }
 
   Index() {
-    console.log('Index!');
+    console.log("Index!");
     const labels = this.state.data;
     return (
       <div className="row d-flex justify-content-center content text-center">
@@ -162,11 +186,11 @@ class App extends React.Component {
   }
 
   Players() {
-    return 'Players';
+    return "Players";
   }
 
   Winners() {
-    return 'Players';
+    return "WINNERS!!!";
   }
   /*
     // Traditional XHR implementation. Getting questions from data.json using XHR. Will run into cross origin issues in some browsers
@@ -190,23 +214,20 @@ class App extends React.Component {
     */
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.handleResize);
+    window.removeEventListener("resize", this.handleResize);
   }
 
   render() {
-    console.log('render', Router, process.env.PUBLIC_URL);
     return (
       <Router /*basename="react-trivia"*/>
         <div>
-          {/*<Route path="/" exact component={this.Index} />*/}
+          <Route path="/" exact component={this.Index} />
           <Route path="/players/" component={this.Players} />
-          <Route path="/" component={this.Game} />
+          <Route path="/game/" component={this.Game} />
           <Route path="/winners/" component={this.Winners} />
-        </div>
-      </Router>
+        </div></Router>
     );
   }
 }
-console.log('b4 render');
-ReactDOM.render(<App />, document.getElementById('app'));
-console.log('after render');
+ReactDOM.render(
+  <App />, document.getElementById("app"));
