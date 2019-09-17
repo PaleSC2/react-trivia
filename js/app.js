@@ -259,7 +259,7 @@ class App extends React.Component {
   render() {
     console.log('render', Router, process.env.PUBLIC_URL);
     return (
-      <Router basename="react-trivia">
+      <Router>
         <div>
           <Route path="/index/" exact component={this.Index} />
           <Route path="/players/" component={this.Players} />

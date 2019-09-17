@@ -1,7 +1,10 @@
 var data = {
   title: 'Alexander Von Humboldt Jeopardy',
   description:
-    'The Cover is a one-page template for building simple and beautiful home pages. Download, edit the text, and add your own fullscreen background photo to make it your own.',
+    'Willkommen\n' +
+    '1.\tJede Gruppe muss ein Thema auswӓhlen\n' +
+    '2.\tDie Gruppe muss auf Frage antworten.\n' +
+    '3.\tDie Gruppe, die mehr Fragen antworten, gewinnt',
   button: 'Spiel',
   player1: 'Spieler 1',
   player2: 'Spieler 2',
