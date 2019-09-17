@@ -51,9 +51,6 @@ class Card extends React.Component {
     if (this.state.view === 'points') {
       audio.play('flip');
       setTimeout(() => {
-        if (this.state.view === 'question') {
-          audio.play('countdown');
-        }
       }, 1800);
       this.setState({ view: 'question', flipping: true });
     } else if (this.state.view === 'question') {
@@ -64,8 +61,6 @@ class Card extends React.Component {
       this.setState({ view: 'points', completed: true, flipping: true });
     }
   }
-
-
 
   getLabelBack() {
     const question = `<p>${this.props.question.question}</p>`;

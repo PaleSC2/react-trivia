@@ -7,6 +7,8 @@ var data = {
   player2: 'Player 2',
   points: 'points',
   turn: 'turn',
+  winnerMessage: 'is the winner!',
+  restartButton: 'play again',
   game: [
     {
       category: 'React 101',

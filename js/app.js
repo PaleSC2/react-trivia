@@ -18,10 +18,13 @@ class App extends React.Component {
       player1Points: 0,
       player2Points: 0,
       turn: 1,
-      p1Turn: true
+      p1Turn: true,
+      winner:'Pablo'
     };
     this.Game = this.Game.bind(this);
     this.Index = this.Index.bind(this);
+    this.Winners = this.Winners.bind(this);
+
     this.handlePlayer1Change = this.handlePlayer1Change.bind(this);
     this.handlePlayer2Change = this.handlePlayer2Change.bind(this);
   }
@@ -92,6 +95,7 @@ class App extends React.Component {
 
     return (
       <div>
+        <Link to="/winners/">Winners</Link>
         <div className="headers">
           <span style={playerStyle} className="header player">{`${this.state.player1} |  `}<span className="total-points">{`${this.state.player1Points} ${labels.points}`}</span></span>
           <span style={playerStyle} className="header player">{`${this.state.player2} |  `}<span className="total-points">{`${this.state.player2Points} ${labels.points}`}</span></span>
@@ -115,11 +119,12 @@ class App extends React.Component {
     console.log('Index!');
     const labels = this.state.data;
     return (
+      <div className="bg">
       <div className="row d-flex justify-content-center content text-center">
         <div className="col-md-6">
           <main role="main" className="inner cover">
-            <h1 className="cover-heading">{labels.title}</h1>
-            <p className="lead">{labels.description}</p>
+            <h1 className="cover-heading" style={{textShadow: "-1px 0 black, 0 3px black, 1px 0 black, 0 -1px black"}}>{labels.title}</h1>
+            <p className="lead" style={{textShadow: "-1px 0 black, 0 3px black, 1px 0 black, 0 -1px black"}}>{labels.description}</p>
             <div className="the-input input-group input-group-lg">
               <div className="input-group-prepend">
                 <span className="input-group-text" id="inputGroup-sizing-lg">
@@ -157,7 +162,7 @@ class App extends React.Component {
             </p>
           </main>
         </div>
-      </div>
+      </div></div>
     );
   }
 
@@ -166,7 +171,24 @@ class App extends React.Component {
   }
 
   Winners() {
-    return 'Players';
+    const labels = this.state.data;
+    return (<div className="row d-flex justify-content-center content text-center">
+      <div className="col-md-6">
+        <main role="main" className="inner cover" style={{paddingTop: "100px"}}>
+          <h1 className="cover-heading">{this.state.winner} {labels.winnerMessage}</h1>
+          <p className="lead">
+            <Link className="btn btn-lg btn-secondary" to="/index/">
+              {labels.restartButton}
+            </Link>
+          </p>
+        </main>
+      </div>
+      <div className="col-md-6">
+        <main role="main" className="inner cover">
+        <img src="../assets/img/alex.jpeg" style={{width: "70%"}}/>
+        </main>
+      </div>
+    </div>)
   }
   /*
     // Traditional XHR implementation. Getting questions from data.json using XHR. Will run into cross origin issues in some browsers
@@ -194,14 +216,14 @@ class App extends React.Component {
   }
 
   render() {
-    console.log('render', Router, process.env.PUBLIC_URL);
+    console.log('render', Router, this.Winners);
     return (
       <Router /*basename="react-trivia"*/>
-        <div>
-          {/*<Route path="/" exact component={this.Index} />*/}
+        <div >
+          <Route path="/index/" exact component={this.Index} />
           <Route path="/players/" component={this.Players} />
-          <Route path="/" component={this.Game} />
-          <Route path="/winners/" component={this.Winners} />
+          <Route path="/game/" component={this.Game} />
+          <Route path="/" component={this.Winners} />
         </div>
       </Router>
     );
