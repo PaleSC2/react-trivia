@@ -261,7 +261,7 @@ class App extends React.Component {
     return (
       <Router basename="react-trivia">
         <div>
-          <Route path="/index/" exact component={this.Index} />
+          <Route path="/index.html" exact component={this.Index} />
           <Route path="/players/" component={this.Players} />
           <Route path="/game/" render={({ history}) => (
            this.Game(history)
