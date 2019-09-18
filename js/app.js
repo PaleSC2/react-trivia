@@ -261,7 +261,7 @@ class App extends React.Component {
     return (
       <Router>
         <div>
-          <Route path="/index/" exact component={this.Index} />
+          <Route path="/" exact component={this.Index} />
           <Route path="/players/" component={this.Players} />
           <Route path="/game/" render={({ history}) => (
            this.Game(history)
