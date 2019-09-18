@@ -45,14 +45,14 @@ var data = {
         {
           points: 100,
           question:
-            'Wo und wann Alexander von Humboldt geboren wurde?',
+            'Wo und wann wurde Alexander von Humboldt geboren?',
           options: ['In Frankfurt, 14. September 1769', 'In Berlin, 14. September 1789', 'In Berlin, 14. Oktober 1769', 'In Berlin, 1. September 1769'],
           answer: 1
         },
         {
           points: 200,
           question:
-            'Wo und wann Alexander von Humboldt gestorben ist',
+            'Wo und wann ist Alexander von Humboldt gestorben?',
           options: ['In Berlin, 6. Mai 1900', 'In Berlin, 6. Juli 1859', 'In Frankfurt, 6. Mai 1859', 'In Berlin, 6. Mai 1859'],
           answer: 3
         },
