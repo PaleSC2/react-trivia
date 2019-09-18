@@ -315,7 +315,7 @@
 	      var _this4 = this;
 	
 	      console.log('render', _reactRouterDom.BrowserRouter, process.env.PUBLIC_URL);
-	      return _react2.default.createElement(_reactRouterDom.BrowserRouter, null, _react2.default.createElement('div', null, _react2.default.createElement(_reactRouterDom.Route, { path: '/', exact: true, component: this.Index }), _react2.default.createElement(_reactRouterDom.Route, { path: '/players/', component: this.Players }), _react2.default.createElement(_reactRouterDom.Route, { path: '/game/', render: function render(_ref) {
+	      return _react2.default.createElement(_reactRouterDom.BrowserRouter, { basename: 'react-trivia' }, _react2.default.createElement('div', null, _react2.default.createElement(_reactRouterDom.Route, { path: '/index.html', exact: true, component: this.Index }), _react2.default.createElement(_reactRouterDom.Route, { path: '/players/', component: this.Players }), _react2.default.createElement(_reactRouterDom.Route, { path: '/game/', render: function render(_ref) {
 	          var history = _ref.history;
 	          return _this4.Game(history);
 	        } }), _react2.default.createElement(_reactRouterDom.Route, { path: '/winners/', component: this.Winners })));
